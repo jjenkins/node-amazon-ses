@@ -33,7 +33,7 @@ Verify the source email address with Amazon.
   var AmazonSES = require('amazon-ses');
   var ses = new AmazonSES('access-key-id', 'secret-access-key');
   ses.verifyEmailAddress('foo@mailinator.com');
-<pre>
+</pre>
 
 You will receive a confirmation email - click the link in that email to finish the verification process.
 
