@@ -43,6 +43,7 @@ You will receive a confirmation email - click the link in that email to finish t
   ses.send({
       from: 'foo@mailinator.com'
     , to: ['bar@mailinator.com', 'jim@mailinator.com']
+    , replyTo: ['john@mailinator.com']
     , subject: 'Test subject'
     , body: {
           text: 'This is the text of the message.'
