@@ -211,8 +211,9 @@ var AmazonSES = (function() {
       call({
           query: buildMessage(message)
         , callback: function(err, data) {
-            if (err) throw err;
-            if (callback) callback(data);
+            if (callback) callback(err, data);
+            //if (err) throw err;
+            //if (callback) callback(data);
         }
       });
     }
