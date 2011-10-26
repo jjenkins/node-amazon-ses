@@ -24,7 +24,16 @@ var AmazonSES = (function() {
     });
     return list;
   };
-
+  
+  var getReplyToList = function(addresses) {
+    var list = {};
+    _.each(addresses, function(address, idx) {
+        var key = 'ReplyToAddresses.member.' + (idx + 1);
+        list[key] = address;
+    });
+    return list;
+  };
+  
   var buildMessage = function(opts) {
     var params = {
         'Action': 'SendEmail'
@@ -38,7 +47,8 @@ var AmazonSES = (function() {
     _.extend(params, getDestinationList(opts.to, 'To'));
     _.extend(params, getDestinationList(opts.cc, 'Cc'));
     _.extend(params, getDestinationList(opts.bcc, 'Bcc'));
-
+    _.extend(params, getReplyToList(opts.replyTo));
+    
     return params;
   };
 
