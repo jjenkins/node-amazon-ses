@@ -2,7 +2,7 @@ var _ = require('underscore');
 var crypto = require('crypto');
 var qs = require('querystring');
 var request = require('request');
-var xml = require('xml2js/lib');
+var xml = require('xml2js');
 
 var AmazonSES = (function() {
 
