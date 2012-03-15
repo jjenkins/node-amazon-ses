@@ -41,7 +41,8 @@ You will receive a confirmation email - click the link in that email to finish t
 
 <pre>
   ses.send({
-      from: 'foo@mailinator.com'
+      returnPath: 'foo@mailinator.com'
+    , from: 'foo@mailinator.com'
     , to: ['bar@mailinator.com', 'jim@mailinator.com']
     , replyTo: ['john@mailinator.com']
     , subject: 'Test subject'

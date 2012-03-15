@@ -37,6 +37,7 @@ var AmazonSES = (function() {
   var buildMessage = function(opts) {
     var params = {
         'Action': 'SendEmail'
+      , 'ReturnPath': opts.returnPath
       , 'Source': opts.from
       , 'Message.Body.Text.Data': opts.body.text
       , 'Message.Body.Text.Charset': 'UTF-8'
