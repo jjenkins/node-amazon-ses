@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jjenkins/node-amazon-ses.png)](http://travis-ci.org/jjenkins/node-amazon-ses)
 # Amazon SES
 
 A simple Amazon SES wrapper, supports the following actions:
