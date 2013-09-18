@@ -81,6 +81,7 @@ var AmazonSES = (function() {
     };
 
     request(options, function(error, response, body) {
+      if (error) return opts.callback(error);
       var parser = new xml.Parser();
       parser.addListener('end', function(data) {
         var err = null;
