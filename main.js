@@ -43,6 +43,7 @@ var AmazonSES = (function() {
       , 'Message.Body.Html.Data': opts.body.html
       , 'Message.Body.Html.Charset': 'UTF-8'
       , 'Message.Subject.Data' : opts.subject
+      , 'host' : opts.host
     };
     _.extend(params, getDestinationList(opts.to, 'To'));
     _.extend(params, getDestinationList(opts.cc, 'Cc'));
@@ -53,8 +54,16 @@ var AmazonSES = (function() {
   };
 
   var call = function(opts) {
-    var host = 'email.us-east-1.amazonaws.com';
+    var host = AmazonSES.regions.US_East;
     var path = '/';
+
+    // Assumed opts.host is a value in AmazonSES.regions
+    // as defined at the bottom of main.js
+
+    if (opts.query.hasOwnProperty("host")) {
+        host = opts.query.host;
+        delete opts.query.host;
+    }
 
     var now = (new Date()).toUTCString();
     var body = qs.stringify(opts.query);
@@ -220,4 +229,12 @@ var AmazonSES = (function() {
   return Constructor;
 
 }());
+
+// Different AWS region endpoints
+AmazonSES.regions = {
+  US_East: 'email.us-east-1.amazonaws.com',
+  US_West: 'email.us-west-2.amazonaws.com',
+  EU: 'email.eu-west-1.amazonaws.com'
+};
+
 module.exports = AmazonSES;
