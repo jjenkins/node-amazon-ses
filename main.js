@@ -6,9 +6,10 @@ var xml = require('xml2js');
 
 var AmazonSES = (function() {
 
-  var init = function(key, secret) {
+  var init = function(key, secret, region) {
     this.accessKeyId = key;
     this.secretAccessKey = secret;
+    this.region = region;
   };
 
   var hmac = function(key, str) {
@@ -53,7 +54,8 @@ var AmazonSES = (function() {
   };
 
   var call = function(opts) {
-    var host = 'email.us-east-1.amazonaws.com';
+
+    var host = 'email.'+this.region+'.amazonaws.com';
     var path = '/';
 
     var now = (new Date()).toUTCString();
@@ -94,8 +96,8 @@ var AmazonSES = (function() {
     });
   };
 
-  var Constructor = function(accessKeyId, secretAccessKey) {
-    init(accessKeyId, secretAccessKey);
+  var Constructor = function(accessKeyId, secretAccessKey, region) {
+    init(accessKeyId, secretAccessKey, region);
   };
 
   Constructor.prototype = {

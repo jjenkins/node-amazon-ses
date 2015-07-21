@@ -31,7 +31,7 @@ Verify the source email address with Amazon.
 
 <pre>
   var AmazonSES = require('amazon-ses');
-  var ses = new AmazonSES('access-key-id', 'secret-access-key');
+  var ses = new AmazonSES('access-key-id', 'secret-access-key', 'region');
   ses.verifyEmailAddress('foo@mailinator.com');
 </pre>
 
