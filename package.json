@@ -1,15 +1,22 @@
 {
   "name": "amazon-ses",
   "description": "Simple Amazon SES Mailer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Jim Jenkins <jim.jenkins@gmail.com>",
   "dependencies": {
-    "request": "2.1.1",
-    "underscore": "1.2.1",
-    "xml2js": "0.1.11"
+    "request": "^2.69.0",
+    "underscore": "^1.8.3",
+    "xml2js": "^0.4.16"
   },
-  "keywords": ["email", "amazon", "ses"],
+  "keywords": [
+    "email",
+    "amazon",
+    "ses"
+  ],
+  "license": "MIT",
   "repository": "git://github.com/jjenkins/node-amazon-ses.git",
   "main": "main",
-  "engines": { "node": ">= 0.4.1" }
+  "engines": {
+    "node": ">= 0.4.1"
+  }
 }
