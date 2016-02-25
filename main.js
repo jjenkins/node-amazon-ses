@@ -53,7 +53,7 @@ var AmazonSES = (function() {
     return params;
   };
 
-  var parser = new xml.Parser({explicitArray : false});
+  var parser = new xml.Parser({explicitArray: false, explicitRoot: false});
 
   var call = function(opts) {
 
@@ -92,10 +92,10 @@ var AmazonSES = (function() {
         if (error) {
           return opts.callback(error);
         }
-        if (data.ErrorResponse) {
-          return opts.callback(new Error(data.ErrorResponse.Error.Message));
+        if (data.Error) {
+          return opts.callback(new Error(data.Error.Message));
         }
-        opts.callback(null, data.SendEmailResponse.SendEmailResult);
+        opts.callback(null, data);
       });
     });
   };
