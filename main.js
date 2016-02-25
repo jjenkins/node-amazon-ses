@@ -53,6 +53,8 @@ var AmazonSES = (function() {
     return params;
   };
 
+  var parser = new xml.Parser({explicitArray : false});
+
   var call = function(opts) {
 
     var host = 'email.'+this.region+'.amazonaws.com';
@@ -83,16 +85,18 @@ var AmazonSES = (function() {
     };
 
     request(options, function(error, response, body) {
-      var parser = new xml.Parser();
-      parser.addListener('end', function(data) {
-        var err = null;
-        if (data.hasOwnProperty('Error')) {
-          err = new Error(data.Error.Message);
+      if (error) {
+        return opts.callback(error);
+      }
+      parser.parseString(body, function(error, data) {
+        if (error) {
+          return opts.callback(error);
         }
-        opts.callback(err, data);
-
+        if (data.ErrorResponse) {
+          return opts.callback(new Error(data.ErrorResponse.Error.Message));
+        }
+        opts.callback(null, data.SendEmailResponse.SendEmailResult);
       });
-      parser.parseString(body);
     });
   };
 
