@@ -39,12 +39,16 @@ var AmazonSES = (function() {
     var params = {
         'Action': 'SendEmail'
       , 'Source': opts.from
-      , 'Message.Body.Text.Data': opts.body.text
-      , 'Message.Body.Text.Charset': 'UTF-8'
-      , 'Message.Body.Html.Data': opts.body.html
-      , 'Message.Body.Html.Charset': 'UTF-8'
       , 'Message.Subject.Data' : opts.subject
     };
+    if (opts.body.text) {
+      params['Message.Body.Text.Data'] = opts.body.text;
+      params['Message.Body.Text.Charset'] = 'UTF-8';
+    }
+    if (opts.body.html) {
+      params['Message.Body.Html.Data'] = opts.body.html;
+      params['Message.Body.Html.Charset'] = 'UTF-8';
+    }
     _.extend(params, getDestinationList(opts.to, 'To'));
     _.extend(params, getDestinationList(opts.cc, 'Cc'));
     _.extend(params, getDestinationList(opts.bcc, 'Bcc'));
