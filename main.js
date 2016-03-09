@@ -6,9 +6,10 @@ var xml = require('xml2js');
 
 var AmazonSES = (function() {
 
-  var init = function(key, secret) {
+  var init = function(key, secret, region) {
     this.accessKeyId = key;
     this.secretAccessKey = secret;
+    this.region = region;
   };
 
   var hmac = function(key, str) {
@@ -38,12 +39,16 @@ var AmazonSES = (function() {
     var params = {
         'Action': 'SendEmail'
       , 'Source': opts.from
-      , 'Message.Body.Text.Data': opts.body.text
-      , 'Message.Body.Text.Charset': 'UTF-8'
-      , 'Message.Body.Html.Data': opts.body.html
-      , 'Message.Body.Html.Charset': 'UTF-8'
       , 'Message.Subject.Data' : opts.subject
     };
+    if (opts.body.text) {
+      params['Message.Body.Text.Data'] = opts.body.text;
+      params['Message.Body.Text.Charset'] = 'UTF-8';
+    }
+    if (opts.body.html) {
+      params['Message.Body.Html.Data'] = opts.body.html;
+      params['Message.Body.Html.Charset'] = 'UTF-8';
+    }
     _.extend(params, getDestinationList(opts.to, 'To'));
     _.extend(params, getDestinationList(opts.cc, 'Cc'));
     _.extend(params, getDestinationList(opts.bcc, 'Bcc'));
@@ -52,8 +57,11 @@ var AmazonSES = (function() {
     return params;
   };
 
+  var parser = new xml.Parser({explicitArray: false, explicitRoot: false});
+
   var call = function(opts) {
-    var host = 'email.us-east-1.amazonaws.com';
+
+    var host = 'email.'+this.region+'.amazonaws.com';
     var path = '/';
 
     var now = (new Date()).toUTCString();
@@ -81,21 +89,23 @@ var AmazonSES = (function() {
     };
 
     request(options, function(error, response, body) {
-      var parser = new xml.Parser();
-      parser.addListener('end', function(data) {
-        var err = null;
-        if (data.hasOwnProperty('Error')) {
-          err = new Error(data.Error.Message);
+      if (error) {
+        return opts.callback(error);
+      }
+      parser.parseString(body, function(error, data) {
+        if (error) {
+          return opts.callback(error);
         }
-        opts.callback(err, data);
-
+        if (data.Error) {
+          return opts.callback(new Error(data.Error.Message));
+        }
+        opts.callback(null, data);
       });
-      parser.parseString(body);
     });
   };
 
-  var Constructor = function(accessKeyId, secretAccessKey) {
-    init(accessKeyId, secretAccessKey);
+  var Constructor = function(accessKeyId, secretAccessKey, region) {
+    init(accessKeyId, secretAccessKey, region);
   };
 
   Constructor.prototype = {
